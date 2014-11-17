@@ -73,7 +73,7 @@ global handlesGlob;
 global nRows;
 global nColumns;
 nRows = 2;
-nColumns = 6;
+nColumns = 10;
 
 global borderWidth;
 global borderColor;
@@ -312,7 +312,8 @@ function nextImages(images, handles, path, lastPos)
     % TODO: Modify selecting the next blurry/dark images
     indices = []; imagesCell = {}; i = 0;
     lastPos = lastPos+1;
-    while(i < n && lastPos <= length(imagesList))
+    nImages = length(imagesList);
+    while(i < n && lastPos <= nImages)
         % Load image
         im = imread([pathImages '/' imagesList(lastPos).name]);
         props = size(im) / resizeTests;
@@ -323,7 +324,7 @@ function nextImages(images, handles, path, lastPos)
         % Check darkness
         dark = mean(mean(mean(im2)))/255;
         if(blur > thresholdBlur || dark < thresholdDark)
-            disp([num2str(i+1) ' ' imagesList(lastPos).name '   blur:' num2str(blur) ' dark:' num2str(1-dark)]);
+            disp([num2str(i+1) '/' num2str(n) ' ' imagesList(lastPos).name '  ' num2str(lastPos) '/' num2str(nImages) '   blur:' num2str(blur) ' dark:' num2str(1-dark)]);
             im = imresize(im, [heightImage widthImage]);
             indices = [indices lastPos];
             i = i+1;
